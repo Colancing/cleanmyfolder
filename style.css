@@ -1,0 +1,20 @@
+.container {
+    width: 900px;
+    margin: 0 auto;
+}
+p{
+    display: inline-block;
+}
+input[type=submit] {
+    display: inline-block;
+    color:red;
+    font-weight:bold;
+    padding:10px;
+}
+input[type=text] {
+    display: inline-block;
+    color:red;
+    font-weight:bold;
+    padding:10px;
+    min-width:300px;
+}
