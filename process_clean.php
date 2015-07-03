@@ -1,8 +1,7 @@
 <?php
-require('config.php');
-require('Class/Image.php');
+require('class/Image.php');
 
-if (isset ($_POST('yes')) {
+if (isset ($_POST['yes'])) {
     $image = new Image();
     $images = $image->getImages(IMAGE_DIR_PATH);
     echo '<pre>';

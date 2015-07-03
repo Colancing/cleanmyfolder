@@ -17,7 +17,7 @@ class Image
             if ($handle = opendir($image_dir)) {
                 while (false !== ($entry = readdir($handle))) {
 //                    Tant que quand on lit le dossier on y trouve des fichiers, on les range dans $entry
-                    if ($entry != "." && $entry != ".." && $entry != "DS_store") {
+                    if ($entry != "." && $entry != ".." && $entry != ".DS_store") {
 //                        quand les entrées trouvées sont différentes de . et .. et Ds_store
                         $images[] = $entry;
 //                        Alors on stocke les entrées dans un tableau $images
@@ -25,10 +25,8 @@ class Image
                 }
             }
         }
-        else {
-            $msg="false";
-            return $msg;
-        }
+        closedir ($handle);
+        return $images;
     }
     //    fin de la méthode getImages
 //**********************************************************************************
