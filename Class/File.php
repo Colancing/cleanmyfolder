@@ -26,12 +26,13 @@ class File
                 if ($files0[$i]['type'] == "image/jpeg") {
                     $files[$i]['filename'] = $entry;
                     $files = array_filter($files);
-                    return $files;
                 }
             }
         }
+        if (isset ($files)) {
+            return $files;
+        }
         closedir($handle);
-
     }
     //    fin de la méthode getImages
 //**********************************************************************************
