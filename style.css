@@ -18,3 +18,14 @@ input[type=text] {
     padding:10px;
     min-width:300px;
 }
+
+.error {
+    background-color: aqua;
+    color: black;
+    border-color: black;
+    width:50%;
+    height:40px;
+    line-height:40px;
+    margin: 0 auto;
+    text-align: center;
+}

@@ -1,5 +1,5 @@
 <?php
-require('class/Image.php');
+require('class/File.php');
 
 if (isset ($_POST['yes'])) {
     $image = new Image();

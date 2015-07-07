@@ -1,23 +1,21 @@
 <?php
 require('config.php');
-require('class/Image.php');
-
-if (isset ($_POST['directory'])) {
-    if (!is_dir ($_POST['directory'])) {
-        echo "Veuillez vérifier le nom du répertoire";
-    }
-    else {
+require('class/File.php');
+if (!is_dir($_POST['directory'])) {
+        $msg_error = "Veuillez vérifier le nom du répertoire";
+    } else {
 //        Le fichier envoyer en $_POST est bien un répertoire
 //        On peut lister les fichiers qu'il contient et vérifier que ce sont bien des images
-
-        $image = new Image();
-        $images = $image->listfiles(IMAGE_DIR_PATH);
-
+        $file = new File();
+        $files = $file->listfiles($_POST['directory']);
+        if (empty($files)) {
+            $msg_error = "Ce repertoire ne contient pas d'image valide";
+        }
         echo '<pre>';
-        print_r($images);
+        print_r($files);
         echo '</pre>';
-        echo "processing";
-    }}
+    }
+
 
 ?>
 <!doctype html>
@@ -31,6 +29,15 @@ if (isset ($_POST['directory'])) {
 <body>
 <div class="container">
     <h1>Ranger mon dossier images</h1>
+    <?php if (isset ($msg_error)) : ?>
+        <div class="error"><?php echo $msg_error ?> </div>
+    <?php endif ?>
+    <p>Voici les fichiers images trouvés dans ce répertoire</p>
+    <?php foreach ($files as $file) : ?>
+        <ul>
+            <li><?php echo $file['filename'] ?></li>
+        </ul>
+    <?php endforeach ?>
 
     <form action="index.php?result=verif" method="post">
         <p><label for="directory">Répertoire à scanner : </label>
