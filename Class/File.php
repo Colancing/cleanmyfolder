@@ -1,7 +1,7 @@
 <?php
 
 class File
-//Permet de récupérer les fichiers images dans un dossier
+//Permet de récupérer les fichiers images0 dans un dossier
 // puis de les réorganiser en fonction de leurs noms
 {
     private $_files;
@@ -17,9 +17,9 @@ class File
         if (!is_dir($folder)) {
             return $this->msgerror($folder . ' n\'est pas un dossier valide.');
         } elseif (empty($folder)) {
-            return 'Ce dossier est vide';
+            return $this->msgerror($folder . 'est vide.');
         } else {
-            $this ->getFiles($folder);
+            $this->getFiles($folder);
         }
 
     }//fin de la méthode ValidFolder
@@ -32,7 +32,7 @@ class File
         $handle = opendir($folder);
         while (false !== ($entry = readdir($handle))) {
 //                    Tant que quand on lit le dossier on y trouve des fichiers, on les range dans $entry
-            if ($entry != "." && $entry != ".." && $entry != ".DS_store" && FALSE === is_dir($folder. '/' .$entry)) {
+            if ($entry != "." && $entry != ".." && $entry != ".DS_store" && FALSE === is_dir($folder . '/' . $entry)) {
 //                        quand les entrées trouvées sont différentes de . et .. et Ds_store qui est ajouté par Mamp
                 $i++;
                 $files0[$i]['filename'] = $entry;
@@ -42,40 +42,36 @@ class File
                     $files[$i]['filename'] = $entry;
                     $files = array_filter($files);
                 }
+
             }
+
         }
-        $this->_files = $files;
         closedir($handle);
-    }
-
-//        fin de la méthode getFiles
-
-    public function showfiles()
-    {echo '<ul>';
-foreach ($this->_files as $array){
-$name=$array['filename'] ;
-    echo '<li>' .$name. '</li>';
-}
-        echo '</ul>';
-    }//fin de function showfiles
-
-    public function renamefiles($folder){
-        foreach ($this->_files as $array){
-            $oldpath=$folder. '/' .$array['filename'];
-            $oldname=$array['filename'];
-            $newfolder = substr($oldname, 0, -8);
-            $newpath=$folder. '/' .$newfolder;
-            $number=substr($oldname,-7,-4);
-            $newname = $newfolder. '/' .$number. '.jpg';
-           if (!is_dir($newpath)){
-               mkdir ($newpath);
-           }
-            rename("images/$oldname", "images/$newname");
-            echo '<p>$oldname = ' .$oldname. '<p>';
-            echo '<p> $newfolder = ' .$newfolder. '<p>';
-            echo '<p>$number = ' .$number. '<p>';
-            echo '<p>$newname =' .$newname. '<p>';
-            echo 'le fichier ' .$oldname. ' a été renommé en :' .$newname;
+        if (empty ($files)) {
+            return $this->msgerror('Il n\'y a rien à ranger dans' . $folder);
+        } else {
+            $this->_files = $files;
+            $this->renamefiles($folder);
         }
-    }//fin de function showfiles
+    }
+//        fin de la méthode getFiles
+//----------------------------------------------------------------------------------------------
+
+
+    public function renamefiles($folder)
+    {
+        foreach ($this->_files as $array) {
+            $oldname = $array['filename'];
+            $newfolder = substr($oldname, 0, -8);
+            $newpath = $folder . '/' . $newfolder;
+            $number = substr($oldname, -7, -4);
+            $newname = $newfolder . '/' . $number . '.jpg';
+            if (!is_dir($newpath)) {
+                mkdir($newpath);
+            }
+            rename("images0/$oldname", "images0/$newname");
+            return "<div class=msg_success>Félicitations, votre dossier a été rangé.<br/>'
+                le fichier ' . $oldname . ' a été renommé en :' . $newname</div>";
+        }
+    }//fin de function renamefiles
 }//fin de la classe File
