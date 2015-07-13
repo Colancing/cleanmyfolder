@@ -3,11 +3,11 @@ require('class/File.php');
 
 //if (isset ($_POST['yes']) && isset ($_POST['directory'])) {
 //$directory  = $_POST['directory'];
-$directory = '/Applications/MAMP/htdocs/Cleanmyfolder/images';
+$directory = 'images';
 $file = new File();
 echo $file -> validFolder($directory);
 $file->showfiles();
-$file->renamefiles();
+$file->renamefiles($directory);
 
 var_dump($file);
 die();

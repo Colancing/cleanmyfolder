@@ -32,7 +32,7 @@ class File
         $handle = opendir($folder);
         while (false !== ($entry = readdir($handle))) {
 //                    Tant que quand on lit le dossier on y trouve des fichiers, on les range dans $entry
-            if ($entry != "." && $entry != ".." && $entry != ".DS_store" $$ FALSE === is_dir($folder. '/' .$entry)) {
+            if ($entry != "." && $entry != ".." && $entry != ".DS_store" && FALSE === is_dir($folder. '/' .$entry)) {
 //                        quand les entrées trouvées sont différentes de . et .. et Ds_store qui est ajouté par Mamp
                 $i++;
                 $files0[$i]['filename'] = $entry;
@@ -59,11 +59,23 @@ $name=$array['filename'] ;
         echo '</ul>';
     }//fin de function showfiles
 
-    public function renamefiles(){
+    public function renamefiles($folder){
         foreach ($this->_files as $array){
-            $name=$array['filename'] ;
-            $rest = substr($name, 0, -4);
-            echo '<p>' .$rest. '<p><br/>';
+            $oldpath=$folder. '/' .$array['filename'];
+            $oldname=$array['filename'];
+            $newfolder = substr($oldname, 0, -8);
+            $newpath=$folder. '/' .$newfolder;
+            $number=substr($oldname,-7,-4);
+            $newname = $newfolder. '/' .$number. '.jpg';
+           if (!is_dir($newpath)){
+               mkdir ($newpath);
+           }
+            rename("images/$oldname", "images/$newname");
+            echo '<p>$oldname = ' .$oldname. '<p>';
+            echo '<p> $newfolder = ' .$newfolder. '<p>';
+            echo '<p>$number = ' .$number. '<p>';
+            echo '<p>$newname =' .$newname. '<p>';
+            echo 'le fichier ' .$oldname. ' a été renommé en :' .$newname;
         }
     }//fin de function showfiles
 }//fin de la classe File
