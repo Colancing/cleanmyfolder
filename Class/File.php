@@ -1,22 +1,26 @@
 <?php
 
+/**
+ * Class File
+ * Permet de ranger le dossier images de son choix
+ * Renomme les fichiers .jpeg en les organisant dans des sous repertoires dédiés à chaque série d'images.
+ */
+
+
 class File
-//Permet de récupérer les fichiers images0 dans un dossier
-// puis de les réorganiser en fonction de leurs noms
+
 {
+    /**
+     * @var array stocke tous les fichiers images trouvés dans le dossier
+     */
     static private $_files;
-    static public $success = FALSE;
 
-    static private function msgSuccess($msg)
-    {
-        return '<div class=\'success\'>' . $msg . '</div>';
-    }
-
-    static private function msgError($msg)
-    {
-        return '<div class=\'error\'>' . $msg . '</div>';
-    }
-
+    /**
+     * Class en statique car il n'y a pas besoin de plusieurs instances
+     * @param $folder string Le dossier image qui doit être rangé et qui a été retourné en _Post
+     * @return string Retourne un message erreur si ce dossier n'existe pas
+     * Sinon poursuit le nettoyage en effectuant la méthode getFiles
+     */
     static public function TidyFolder($folder)
     {
         if (!is_dir($folder)) {
@@ -26,6 +30,12 @@ class File
         }
     }//fin de la méthode TidyFolder
 
+    /**
+     * @param $folder string Le dossier image qui doit être rangé et qui a été retourné en _Post
+     * @return string Retourne un message erreur si il n'y a pas d'images à ranger
+     * Sinon récupère toutes les images dans un tableau $_files
+     * et poursuit le nettoyage en effectuant la méthode renamefiles
+     */
     static private function getFiles($folder)
     {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -61,6 +71,10 @@ class File
 //----------------------------------------------------------------------------------------------
 
 
+    /**
+     * @param $folder string Le dossier image qui doit être rangé et qui a été retourné en _Post
+     * @return string retourne un message de félicitations
+     */
     static private function renamefiles($folder)
     {
         foreach (self::$_files as $array) {
@@ -73,8 +87,27 @@ class File
                 mkdir($newpath);
             }
             rename("$folder/$oldname", "$folder/$newname");
-            echo 'Le fichier ' . $folder . '/' . $oldname . ' a été renommé en : ' . $folder . '/' . $newname. '<br/>';
+            echo 'Le fichier ' . $folder . '/' . $oldname . ' a été renommé en : ' . $folder . '/' . $newname . '<br/>';
         }
         return self::msgSuccess('Félicitations. Ton dossier images est magnifique !');
-    }//fin de function renamefiles
+    }//fin de la méthode renamefiles
+
+    /**
+     * @param $msg string
+     * @return string met en forme le message Success
+     */
+    static private function msgSuccess($msg)
+    {
+        return '<div class=\'success\'>' . $msg . '</div>';
+    }
+
+    /**
+     * @param $msg string
+     * @return string met en forme le message d'erreur
+     */
+    static private function msgError($msg)
+    {
+        return '<div class=\'error\'>' . $msg . '</div>';
+    }
+
 }//fin de la classe File
