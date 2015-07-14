@@ -1,13 +1,21 @@
-.container {
-    width: 900px;
-    margin: 0 auto;
+body {
+    color: black;
 }
+.container {
+    color:white;
+    background-color: grey;
+    width: 600px;
+    padding:50px;
+    margin: 30px auto;
+}
+
 p{
     display: inline-block;
 }
 input[type=submit] {
     display: inline-block;
-    color:red;
+    color:black;
+    background-color: lightgreen;
     font-weight:bold;
     padding:10px;
 }
@@ -19,13 +27,19 @@ input[type=text] {
     min-width:300px;
 }
 
-.error {
-    background-color: aqua;
-    color: black;
+.error, .success {
     border-color: black;
     width:50%;
     height:40px;
     line-height:40px;
-    margin: 0 auto;
+    margin: 20px auto;
     text-align: center;
+}
+.error {
+    background-color: aqua;
+    color: black;
+}
+.success{
+    background-color: yellow;
+    color: black;
 }

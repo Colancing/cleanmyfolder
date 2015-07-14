@@ -4,27 +4,29 @@ class File
 //Permet de récupérer les fichiers images0 dans un dossier
 // puis de les réorganiser en fonction de leurs noms
 {
-    private $_files;
+    static private $_files;
+    static public $success = FALSE;
 
+    static private function msgSuccess($msg)
+    {
+        return '<div class=\'success\'>' . $msg . '</div>';
+    }
 
-    private function msgError($msg)
+    static private function msgError($msg)
     {
         return '<div class=\'error\'>' . $msg . '</div>';
     }
 
-    public function ValidFolder($folder)
+    static public function TidyFolder($folder)
     {
         if (!is_dir($folder)) {
-            return $this->msgerror($folder . ' n\'est pas un dossier valide.');
-        } elseif (empty($folder)) {
-            return $this->msgerror($folder . 'est vide.');
+            return self::msgError('Le dossier ' . $folder . ' n\'existe pas.');
         } else {
-            $this->getFiles($folder);
+            return self::getFiles($folder);
         }
+    }//fin de la méthode TidyFolder
 
-    }//fin de la méthode ValidFolder
-
-    private function getFiles($folder)
+    static private function getFiles($folder)
     {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $files = [];
@@ -32,7 +34,7 @@ class File
         $handle = opendir($folder);
         while (false !== ($entry = readdir($handle))) {
 //                    Tant que quand on lit le dossier on y trouve des fichiers, on les range dans $entry
-            if ($entry != "." && $entry != ".." && $entry != ".DS_store" && FALSE === is_dir($folder . '/' . $entry)) {
+            if ($entry != "." && $entry != ".." && $entry != ".DS_Store" && FALSE === is_dir($folder . '/' . $entry)) {
 //                        quand les entrées trouvées sont différentes de . et .. et Ds_store qui est ajouté par Mamp
                 $i++;
                 $files0[$i]['filename'] = $entry;
@@ -42,26 +44,27 @@ class File
                     $files[$i]['filename'] = $entry;
                     $files = array_filter($files);
                 }
-
             }
-
+        }
+        if ($i == 0) {
+            return self::msgError('Le dossier ' . $folder . ' existe mais il est vide...');
         }
         closedir($handle);
         if (empty ($files)) {
-            return $this->msgerror('Il n\'y a rien à ranger dans' . $folder);
+            return self::msgError('Il n\'y a aucune image à ranger dans le dossier ' . $folder);
         } else {
-            $this->_files = $files;
-            $this->renamefiles($folder);
+            self::$_files = $files;
+            return self::renamefiles($folder);
         }
     }
 //        fin de la méthode getFiles
 //----------------------------------------------------------------------------------------------
 
 
-    public function renamefiles($folder)
+    static private function renamefiles($folder)
     {
-        foreach ($this->_files as $array) {
-            $oldname = $array['filename'];
+        foreach (self::$_files as $array) {
+            $oldname = trim($array['filename']);
             $newfolder = substr($oldname, 0, -8);
             $newpath = $folder . '/' . $newfolder;
             $number = substr($oldname, -7, -4);
@@ -69,9 +72,9 @@ class File
             if (!is_dir($newpath)) {
                 mkdir($newpath);
             }
-            rename("images0/$oldname", "images0/$newname");
-            return "<div class=msg_success>Félicitations, votre dossier a été rangé.<br/>'
-                le fichier ' . $oldname . ' a été renommé en :' . $newname</div>";
+            rename("$folder/$oldname", "$folder/$newname");
+            echo 'Le fichier ' . $folder . '/' . $oldname . ' a été renommé en : ' . $folder . '/' . $newname. '<br/>';
         }
+        return self::msgSuccess('Félicitations. Ton dossier images est magnifique !');
     }//fin de function renamefiles
 }//fin de la classe File
