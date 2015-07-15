@@ -1,0 +1,15 @@
+Le dossier images :
+est le dossier qui teste le bon déroulement du script jusqu'au bout du processus.
+Il contient quelques images avec des noms variés
+pour tester si le script marche aussi bien avec des noms simples ou composés d'underscore ou de tiret
+Il contient également un fichier php afin de s'assurer que le script l'écarte en constatant son type mime.
+
+Le dossier images2
+est VIDE pour vérifier le message d'erreur et que le dossier choisi avec formulaire
+marche même si il ne s(agit pas du dossier par défaut
+
+Le dossier images3 ne contient qu'un fichier qui n'est pas un jpeg
+pour vérifier le message d'erreur
+
+N'importe quel autre dossier non existant (imageszzz par exemple) pourra être testé
+afin de vérifier le message d'erreur
