@@ -45,7 +45,7 @@ class File
         while (false !== ($entry = readdir($handle))) {
 //                    Tant que quand on lit le dossier on y trouve des fichiers, on les range dans $entry
             if ($entry != "." && $entry != ".." && $entry != ".DS_Store" && FALSE === is_dir($folder . '/' . $entry)) {
-//                        quand les entrées trouvées sont différentes de . et .. et Ds_store qui est ajouté par Mamp
+//                        quand les entrées trouvées sont différentes de . et .. et Ds_store (ajouté par Mamp)
                 $i++;
                 $files0[$i]['filename'] = $entry;
                 $files0[$i]['type'] = finfo_file($finfo, $folder . '/' . $entry);
